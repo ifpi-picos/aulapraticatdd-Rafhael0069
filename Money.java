@@ -1,50 +1,30 @@
-abstract class Money {
+class Money {
     protected int amount;
     protected String currency;
-   
-    public boolean equals(Object object) {
-        Money money = (Money) object;
-        return amount == money.amount && getClass().equals(money.getClass());
+
+    String currency() {
+        return currency;
     }
 
-    static Money dollar(int amount)  {
-        return new Dollar(amount, "USD");
-    }
-     
-    static Money franc(int amount) {
-        return new Franc(amount, "CHF");
-    }
     Money(int amount, String currency) {
         this.amount = amount;
         this.currency = currency;
     }
 
-    abstract Money times(int multiplier); 
-
-    String currency() {
-        return currency;
+    static Money dollar(int amount)  {
+        return new Money(amount, "USD");
     }
-}
-
-class Franc extends Money{
-	
-    Franc(int amount, String currency) {
-        super(amount, currency);
+  
+    static Money franc(int amount) {
+        return new Money(amount, "CHF");
     }
-       
-    Money times(int multiplier)  {
-        return Money.franc(amount * multiplier);
-    }	
-
-}
-
-class Dollar extends Money{
-	
-    Dollar(int amount, String currency)  {
-        super(amount, currency);
+   
+    public boolean equals(Object object) {
+        Money money = (Money) object;
+        return amount == money.amount && currency().equals(money.currency());
     }
-      
-    Money times(int multiplier)  {
-        return Money.dollar(amount * multiplier);
-    }    
+
+    Money times(int multiplier) {
+        return new Money(amount * multiplier, currency);
+    } 
 }
